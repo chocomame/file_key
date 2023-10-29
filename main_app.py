@@ -20,9 +20,15 @@ def correct_text_for_download(text, corrections):
         text = text.replace(wrong, correct)
     return text
 
-st.title('表記揺れチェックツール')
+st.title('AIライティング用表記揺れチェック') 
+st.markdown("""
+表記揺れチェック＆修正したファイル（docxかmd）をアップロードしてください。  
+検品したい表記を選択して、開始ボタンを押してください。  
+ダウンロードファイル用のボタンが出現します（.mdファイルが出てきます）。
+""")
+st.image('nyan_ai_writing_01.jpg')
 
-uploaded_files = st.file_uploader("WordまたはMarkdownファイルをアップロードしてください", type=["docx", "md"], accept_multiple_files=True)
+uploaded_files = st.file_uploader("WordまたはMarkdownファイルをアップロードしてください（複数可）", type=["docx", "md"], accept_multiple_files=True)
 
 # ユーザーが選択できる表記揺れのリスト
 options = {
@@ -37,7 +43,7 @@ options = {
 selected_options = st.multiselect("修正したい表記揺れを選択してください", list(options.keys()))
 
 # ユーザーが自由に入力できるキーワードのリスト
-user_keywords = st.text_area("追加でチェックしたいキーワードを「キーワード:変換後の文字」の形式で1行ずつ入力してください").split('\n')
+user_keywords = st.text_area("追加でチェックしたいキーワードを「キーワード:変換後の文字」（例「内科:ナイカ」）の形式で1行ずつ入力してください。コロンは半角です").split('\n')
 
 # 開始ボタン
 if st.button('開始'):
