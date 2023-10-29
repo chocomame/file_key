@@ -10,9 +10,14 @@ def read_docx(file):
         fullText.append(para.text)
     return '\n'.join(fullText)
 
-def correct_text(text, corrections):
+def correct_text_for_display(text, corrections):
     for wrong, correct in corrections.items():
         text = text.replace(wrong, f'<span style="color:red;">{correct}</span>')
+    return text
+
+def correct_text_for_download(text, corrections):
+    for wrong, correct in corrections.items():
+        text = text.replace(wrong, correct)
     return text
 
 st.title('表記揺れチェックツール')
@@ -55,14 +60,14 @@ if st.button('開始'):
         st.write('アップロードされたファイルの内容:')
         st.write(text)
 
-        corrected_text = correct_text(text, corrections)
+        corrected_text_for_display = correct_text_for_display(text, corrections)
         st.write('修正後のテキスト:')
-        st.markdown(corrected_text, unsafe_allow_html=True)
+        st.markdown(corrected_text_for_display, unsafe_allow_html=True)
 
-        # Create a download button for the corrected text
+        corrected_text_for_download = correct_text_for_download(text, corrections)
         st.download_button(
             label="修正後のファイルをダウンロード",
-            data=corrected_text.encode('utf-8'),
+            data=corrected_text_for_download.encode('utf-8'),
             file_name='corrected.md',
             mime='text/markdown',
         )
@@ -85,12 +90,12 @@ if st.button('開始'):
                     st.write('アップロードされたファイルの内容:')
                     st.write(text)
 
-                    corrected_text = correct_text(text, corrections)
+                    corrected_text_for_display = correct_text_for_display(text, corrections)
                     st.write('修正後のテキスト:')
-                    st.markdown(corrected_text, unsafe_allow_html=True)
+                    st.markdown(corrected_text_for_display, unsafe_allow_html=True)
 
-                    # Add corrected text to the zip file
-                    zip_file.writestr(f'corrected_{i}.md', corrected_text)
+                    corrected_text_for_download = correct_text_for_download(text, corrections)
+                    zip_file.writestr(f'corrected_{i}.md', corrected_text_for_download)
 
         # Finish the zip file
         zip_file.close()
