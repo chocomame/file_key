@@ -2,6 +2,7 @@ import streamlit as st
 from docx import Document
 import io
 import zipfile
+from PIL import Image
 
 def read_docx(file):
     doc = Document(io.BytesIO(file.read()))
@@ -26,7 +27,9 @@ st.markdown("""
 検品したい表記を選択して、開始ボタンを押してください。  
 ダウンロードファイル用のボタンが出現します（.mdファイルが出てきます）。
 """)
-st.image('nyan_ai_writing_01.jpg')
+
+image = Image.open('nyan_ai_writing_01.jpg')
+st.image(image,use_column_width=True)
 
 uploaded_files = st.file_uploader("WordまたはMarkdownファイルをアップロードしてください（複数可）", type=["docx", "md"], accept_multiple_files=True)
 
