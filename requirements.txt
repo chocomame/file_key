@@ -1,2 +1,2 @@
-streamlit
-python-docx
+streamlit==0.88.0
+python-docx==0.8.11
